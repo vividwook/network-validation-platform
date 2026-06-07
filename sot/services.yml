@@ -13,7 +13,6 @@ services:
     admin:
       privilege: 15
       role: network-admin
-      secret: admin
 
   dns:
     servers:

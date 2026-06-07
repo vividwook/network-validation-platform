@@ -7,7 +7,7 @@
 no aaa root
 !
 {% for username, user in services.raw.local_users.items() %}
-username {{ username }} privilege {{ user.privilege }} role {{ user.role }} secret {{ user.secret }}
+username {{ username }} privilege {{ user.privilege }} role {{ user.role }}{% if user.secret is defined %} secret {{ user.secret }}{% else %} nopassword{% endif %}
 {% endfor %}
 !
 hostname {{ device.hostname }}

@@ -69,3 +69,7 @@ make collect-state
 make validate
 make report
 ```
+
+## Security Note
+
+This public example does not store production credentials or API tokens. The generated cEOS lab user is intended for local Containerlab testing only; set a real secret outside the repository before adapting this project for any shared or production environment.
