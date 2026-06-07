@@ -28,6 +28,9 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+markers = [
+    "integration: live Containerlab tests that require Docker and a deployed lab",
+]
 
 [tool.ruff]
 line-length = 88

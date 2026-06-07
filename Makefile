@@ -1,4 +1,4 @@
-.PHONY: validate-sot generate deploy-lab collect-state validate report test destroy-lab
+.PHONY: validate-sot generate deploy-lab collect-state validate report test test-integration destroy-lab
 
 validate-sot:
 	PYTHONPATH=src python -m nvp.cli validate-sot
@@ -20,6 +20,9 @@ report:
 
 test:
 	pytest
+
+test-integration:
+	NVP_RUN_LIVE_TESTS=1 pytest -m integration
 
 destroy-lab:
 	containerlab destroy -t containerlab/evpn.yml
