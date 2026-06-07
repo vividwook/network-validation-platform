@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import argparse
+import sys
 
 from nvp.collectors import collect_state
 from nvp.generate_configs import generate_configs
 from nvp.load_sot import load_fabric_intent, summarize_intent
+from nvp.validators import format_validation_results, validate_state
 
 
 COMMANDS = (
@@ -28,7 +30,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     for command in COMMANDS:
         command_parser = subparsers.add_parser(command)
-        if command in {"validate-sot", "generate", "collect-state"}:
+        if command in {"validate-sot", "generate", "collect-state", "validate"}:
             command_parser.add_argument(
                 "--sot-dir",
                 default="sot",
@@ -55,6 +57,12 @@ def build_parser() -> argparse.ArgumentParser:
                 "--lab-name",
                 default=None,
                 help="Containerlab lab name. Defaults to fabric.name from SoT.",
+            )
+        if command == "validate":
+            command_parser.add_argument(
+                "--state-dir",
+                default="artifacts/state",
+                help="Directory containing collected state artifacts.",
             )
 
     return parser
@@ -91,6 +99,13 @@ def main() -> None:
         print("Collected state artifacts:")
         for artifact in artifacts:
             print(f"- {artifact.path}")
+        return
+
+    if args.command == "validate":
+        results = validate_state(sot_dir=args.sot_dir, state_dir=args.state_dir)
+        print(format_validation_results(results))
+        if not all(item.passed for item in results):
+            sys.exit(1)
         return
 
     print(f"{args.command} is not implemented yet.")
