@@ -1,0 +1,48 @@
+---
+underlay:
+  routing_protocol: ebgp
+  defaults:
+    maximum_paths: 2
+    router_id_source: loopback0
+    advertise_loopbacks: true
+
+  peer_groups:
+    SPINES:
+      description: eBGP peers toward spine switches
+    LEAVES:
+      description: eBGP peers toward leaf switches
+
+  devices:
+    spine1:
+      peer_group: LEAVES
+      neighbors:
+        - leaf1
+        - leaf2
+      advertised_networks:
+        - loopback0
+
+    spine2:
+      peer_group: LEAVES
+      neighbors:
+        - leaf1
+        - leaf2
+      advertised_networks:
+        - loopback0
+
+    leaf1:
+      peer_group: SPINES
+      neighbors:
+        - spine1
+        - spine2
+      advertised_networks:
+        - loopback0
+        - loopback1
+
+    leaf2:
+      peer_group: SPINES
+      neighbors:
+        - spine1
+        - spine2
+      advertised_networks:
+        - loopback0
+        - loopback1

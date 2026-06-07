@@ -1,0 +1,32 @@
+---
+validation:
+  levels:
+    level1_underlay:
+      enabled: true
+      checks:
+        - devices_exist
+        - containers_running
+        - interfaces_exist
+        - underlay_bgp_established
+
+    level2_overlay:
+      enabled: true
+      checks:
+        - evpn_bgp_established
+        - vrfs_exist
+        - vlans_exist
+        - vnis_exist
+        - vlan_vni_mapping
+        - evpn_mac_ip_routes
+
+    level3_reachability:
+      enabled: true
+      checks:
+        - host_gateway_reachability
+        - same_vlan_host_reachability
+
+    level4_failure_recovery:
+      enabled: false
+      checks:
+        - spine_failure_convergence
+        - spine_restore_health

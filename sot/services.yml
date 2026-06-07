@@ -1,0 +1,26 @@
+---
+services:
+  eos:
+    service_routing_protocols_model: multi-agent
+    spanning_tree_mode: mstp
+
+  management_apis:
+    http_commands: true
+    gnmi: true
+    netconf: true
+
+  local_users:
+    admin:
+      privilege: 15
+      role: network-admin
+      secret: admin
+
+  dns:
+    servers:
+      - 8.8.8.8
+      - 1.1.1.1
+
+  ntp:
+    servers:
+      - 129.6.15.28
+      - 132.163.96.1

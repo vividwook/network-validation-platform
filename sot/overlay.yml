@@ -1,0 +1,56 @@
+---
+overlay:
+  control_plane: evpn
+  vtep_source_interface: Loopback1
+
+  evpn:
+    route_distinguisher: auto
+    route_targets:
+      import: auto
+      export: auto
+    spine_route_servers:
+      - spine1
+      - spine2
+
+  vrfs:
+    TENANT_A:
+      vni: 50001
+      route_distinguisher: auto
+      route_targets:
+        import: auto
+        export: auto
+      devices:
+        - leaf1
+        - leaf2
+
+  vlans:
+    10:
+      name: BLUE
+      vrf: TENANT_A
+      vni: 10010
+      gateway: 192.168.10.1/24
+      devices:
+        - leaf1
+        - leaf2
+
+    20:
+      name: GREEN
+      vrf: TENANT_A
+      vni: 10020
+      gateway: 192.168.20.1/24
+      devices:
+        - leaf1
+        - leaf2
+
+  reachability:
+    same_vlan:
+      - name: vlan10_l2_vni
+        source: host1
+        destination: host3
+        vlan: 10
+        vni: 10010
+      - name: vlan20_l2_vni
+        source: host2
+        destination: host4
+        vlan: 20
+        vni: 10020

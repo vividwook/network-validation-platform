@@ -1,0 +1,61 @@
+name: evpn-lab
+
+topology:
+  nodes:
+    spine1:
+      kind: ceos
+      image: ceos:4.32.5M
+      startup-config: ../generated-configs/spine1.cfg
+
+    spine2:
+      kind: ceos
+      image: ceos:4.32.5M
+      startup-config: ../generated-configs/spine2.cfg
+
+    leaf1:
+      kind: ceos
+      image: ceos:4.32.5M
+      startup-config: ../generated-configs/leaf1.cfg
+
+    leaf2:
+      kind: ceos
+      image: ceos:4.32.5M
+      startup-config: ../generated-configs/leaf2.cfg
+
+    host1:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 192.168.10.11/24 dev eth1
+        - ip route add default via 192.168.10.1
+
+    host2:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 192.168.20.11/24 dev eth1
+        - ip route add default via 192.168.20.1
+
+    host3:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 192.168.10.12/24 dev eth1
+        - ip route add default via 192.168.10.1
+
+    host4:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 192.168.20.12/24 dev eth1
+        - ip route add default via 192.168.20.1
+
+  links:
+    - endpoints: ["spine1:eth1", "leaf1:eth1"]
+    - endpoints: ["spine1:eth2", "leaf2:eth1"]
+    - endpoints: ["spine2:eth1", "leaf1:eth2"]
+    - endpoints: ["spine2:eth2", "leaf2:eth2"]
+    - endpoints: ["leaf1:eth3", "host1:eth1"]
+    - endpoints: ["leaf1:eth4", "host2:eth1"]
+    - endpoints: ["leaf2:eth3", "host3:eth1"]
+    - endpoints: ["leaf2:eth4", "host4:eth1"]
